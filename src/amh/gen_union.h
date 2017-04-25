@@ -1,21 +1,28 @@
+/*
+  Copyright (C) Dolphin project-team, CRIStAL, 2017
+  Aymeric Blot
+
+  This software is governed by the CeCILL-C license.
+  You can use, modify and/ or redistribute the software under the
+  terms of the CeCILL-C license as circulated by CEA, CNRS and INRIA
+  at the following URL "http://www.cecill.info".
+ */
+
 #pragma once
 
-#include <vector>
-#include <algorithm>
-
 namespace amh {
-  template<class TIN>
-  class union_gen : public amh::gen<TIN> {
+  template<class TIN, class TOUT=TIN>
+  class gen_union : public amh::gen<TIN,TOUT> {
   public:
-    union_gen(amh::gen<TIN>& _lgen, amh::gen<TIN>& _rgen) :
+    gen_union(amh::gen<TIN,TOUT>& _lgen, amh::gen<TIN,TOUT>& _rgen) :
       gen_left(_lgen), gen_right(_rgen) {
       if (_lgen.max()*_rgen.max() < 0)
         throw std::runtime_error("cannot randomize infinite generator");
     }
 
     void init() {
-        gen_left.init();
-        gen_right.init();
+      gen_left.init();
+      gen_right.init();
     }
 
     void key(int k) {
@@ -47,7 +54,7 @@ namespace amh {
       return gen_left.max()+gen_right.max();
     }
 
-    TIN operator()(TIN& _in) {
+    TOUT operator()(TIN& _in) {
       if (key_ < gen_left.max())
         return gen_left(_in);
       else
@@ -55,8 +62,8 @@ namespace amh {
     }
 
   private:
-    amh::gen<TIN>& gen_left;
-    amh::gen<TIN>& gen_right;
+    amh::gen<TIN,TOUT>& gen_left;
+    amh::gen<TIN,TOUT>& gen_right;
     int key_ = 0;
   };
 }

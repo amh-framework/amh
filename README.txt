@@ -1,1 +1,1 @@
-WARNING: fragileChainAlgo can/must be casted into chainAlgo!
+WARNING: algo_chain_fragile can/must be cast into algo_chain!

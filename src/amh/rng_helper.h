@@ -1,13 +1,13 @@
 #pragma once
 
 namespace amh {
-  class amhRng {
+  class rng_helper {
   public:
-    amhRng() {
+    rng_helper() {
       std::random_device rd;
       reseed(rd());
     }
-    amhRng(int seed) {
+    rng_helper(int seed) {
       reseed(seed);
     }
 
@@ -27,6 +27,11 @@ namespace amh {
     double uniform(double min, double max) {
       std::uniform_real_distribution<double> dis(min, max);
       return dis(mt);
+    }
+
+    template<class T>
+    void shuffle(T begin, T end) {
+      std::shuffle(begin, end, mt);
     }
 
   protected:

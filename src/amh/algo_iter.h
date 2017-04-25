@@ -1,16 +1,26 @@
+/*
+  Copyright (C) Dolphin project-team, CRIStAL, 2017
+  Aymeric Blot
+
+  This software is governed by the CeCILL-C license.
+  You can use, modify and/ or redistribute the software under the
+  terms of the CeCILL-C license as circulated by CEA, CNRS and INRIA
+  at the following URL "http://www.cecill.info".
+ */
+
 #pragma once
 
 namespace amh {
   template<class TIN>
-  class iterAlgo : public algo<TIN> {
+  class algo_iter : public algo<TIN> {
   public:
-    iterAlgo(algo<TIN>& _step, algo<TIN>& _check, int& _i) :
+    algo_iter(algo<TIN>& _step, algo<TIN>& _check, int& _i) :
       step(_step), check(_check), max_iter(_i) {}
-    iterAlgo(algo<TIN>& _step, algo<TIN>& _check, int&& _i) :
+    algo_iter(algo<TIN>& _step, algo<TIN>& _check, int&& _i) :
       step(_step), check(_check), max_iter(_i) {}
-    iterAlgo(algo<TIN>& _step, int& _i) :
+    algo_iter(algo<TIN>& _step, int& _i) :
       step(_step), check(def_check), max_iter(_i) {}
-    iterAlgo(algo<TIN>& _step, int&& _i) :
+    algo_iter(algo<TIN>& _step, int&& _i) :
       step(_step), check(def_check), max_iter(_i) {}
 
     TIN operator()(TIN& _in) {

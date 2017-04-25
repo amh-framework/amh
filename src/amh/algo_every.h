@@ -1,25 +1,35 @@
+/*
+  Copyright (C) Dolphin project-team, CRIStAL, 2017
+  Aymeric Blot
+
+  This software is governed by the CeCILL-C license.
+  You can use, modify and/ or redistribute the software under the
+  terms of the CeCILL-C license as circulated by CEA, CNRS and INRIA
+  at the following URL "http://www.cecill.info".
+ */
+
 #pragma once
 
 namespace amh {
   template<class TIN, class TOUT=TIN>
-  class everyAlgo : public algo<TIN,TOUT> {
+  class algo_every : public algo<TIN,TOUT> {
   public:
-    everyAlgo(int& _i, algo<TIN,TOUT>& _opt, int k=0) :
+    algo_every(int& _i, algo<TIN,TOUT>& _opt, int k=0) :
       max_i(_i), op_true(_opt), op_false(def_algo), has_else(false) {
       if (k != 0)
         setup(k);
     }
-    everyAlgo(int& _i, algo<TIN,TOUT>& _opt, algo<TIN>& _opf, int k=0) :
+    algo_every(int& _i, algo<TIN,TOUT>& _opt, algo<TIN>& _opf, int k=0) :
       max_i(_i), op_true(_opt), op_false(_opf), has_else(true) {
       if (k != 0)
         setup(k);
     }
-    everyAlgo(int&& _i, algo<TIN,TOUT>& _opt, int k=0) :
+    algo_every(int&& _i, algo<TIN,TOUT>& _opt, int k=0) :
       max_i(_i), op_true(_opt), op_false(def_algo), has_else(false) {
       if (k != 0)
         setup(k);
     }
-    everyAlgo(int&& _i, algo<TIN,TOUT>& _opt, algo<TIN,TOUT>& _opf, int k=0) :
+    algo_every(int&& _i, algo<TIN,TOUT>& _opt, algo<TIN,TOUT>& _opf, int k=0) :
       max_i(_i), op_true(_opt), op_false(_opf), has_else(true) {
       if (k != 0)
         setup(k);
