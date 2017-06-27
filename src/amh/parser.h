@@ -35,7 +35,7 @@ namespace amh {
       return false;
     }
 
-    parser_param_base* add_alias() {
+    virtual parser_param_base* add_alias() {
       return this;
     }
     template<class ...TT>
@@ -44,7 +44,7 @@ namespace amh {
       return add_alias(ss...);
     }
 
-    parser_param_base* set_default(std::string s) {
+    virtual parser_param_base* set_default(std::string s) {
       default_value = s;
       has_default_value = true;
       if (!has_value) {
@@ -163,7 +163,17 @@ namespace amh {
       set_implicit(iv);
     }
 
+    parser_param* add_alias() {
+      return this;
+    }
+    template<class ...TT>
+    parser_param* add_alias(std::string s, TT...ss) {
+      aliases.push_back(s);
+      return add_alias(ss...);
+    }
+
     parser_param* set_default(T v) {
+      validate(v);
       default_value = v;
       has_default_value = true;
       if (!has_value) {
@@ -174,6 +184,7 @@ namespace amh {
     }
 
     parser_param* set_implicit(T v) {
+      validate(v);
       implicit_value = v;
       has_implicit_value = true;
       return this;
@@ -198,6 +209,7 @@ namespace amh {
         value = read_bool(s);
       else
         is >> value;
+      validate(value);
     }
 
     void read_value(std::string s) {
@@ -206,9 +218,11 @@ namespace amh {
         value = read_bool(s);
       else
         is >> value;
+      validate(value);
     }
 
     void set_value(T v) {
+      validate(v);
       value = v;
     }
 
@@ -225,6 +239,43 @@ namespace amh {
     parser_param* set_implicit_description(std::string s) {
       implicit_description = s;
       return this;
+    }
+
+    parser_param_base* should_be(std::vector<T> vect) {
+      std::stringstream ss;
+      ss << "should be in {";
+      for (T v_ : vect)
+        ss << " " << v_ << ",";
+      ss << "\b }";
+      validation_message = ss.str();
+      validator = [vect](T& v) {
+        for (T v_ : vect)
+          if (v == v_)
+            return true;
+        return false;
+      };
+      return this;
+    }
+
+    parser_param_base* should_be(std::function<bool (T&)> valid) {
+      validator = valid;
+      return this;
+    }
+
+    parser_param_base* should_be(std::string msg, std::function<bool (T&)> valid) {
+      validation_message = msg;
+      validator = valid;
+      return this;
+    }
+
+    void validate(T v) {
+      if (validator) {
+        std::string msg = "amh::parser validation error ("+name+")";
+        if (validation_message != "")
+          msg += ": "+validation_message;
+        if (!validator(v))
+          throw std::runtime_error(msg);
+      }
     }
 
     void print_help_on(std::ostream& out, int pad) {
@@ -286,6 +337,8 @@ namespace amh {
     T value;
     T default_value;
     T implicit_value;
+    std::function<bool (T&)> validator;
+    std::string validation_message = "";
   };
 
   class parser {

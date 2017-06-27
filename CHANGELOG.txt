@@ -1,0 +1,7 @@
+0.1.2: (current)
+add detach/attach to opt/check_ctrlc.h
+add validation to amh/parser.h
+add amh/algo_term.h
+
+0.1.1:
+create CHANGELOG.txt

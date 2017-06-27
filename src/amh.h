@@ -68,6 +68,7 @@ namespace amh {
 
 // composition
 #include <amh/algo_chain.h>
+#include <amh/algo_term.h>
 #include <amh/algo_conj.h>
 #include <amh/algo_disj.h>
 
