@@ -1,4 +1,7 @@
-0.1.2: (current)
+0.1.3: (current)
+update copyright
+
+0.1.2:
 add detach/attach to opt/check_ctrlc.h
 add validation to amh/parser.h
 add amh/algo_term.h

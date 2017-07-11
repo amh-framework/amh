@@ -1,5 +1,5 @@
 /*
-  Copyright (C) Dolphin project-team, CRIStAL, 2017
+  Copyright (C) ORKAD team, CRIStAL, University of Lille, 2017
   Aymeric Blot
 
   This software is governed by the CeCILL-C license.
